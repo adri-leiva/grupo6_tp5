@@ -68,14 +68,16 @@ $usuarioLogin=$encontrar[0];
                     $listaRol= $abmrol->buscar(null);
                     $checked="";
                     foreach($listaRol as $descriptRol){
-
+                        $checked="";
+                    
                         foreach($listaUsuarioRol as $usuarioRol){
                             if($descriptRol->getRodescript()==$usuarioRol->getObj_rol()->getRodescript()){
                                         $checked="checked";
-                            }else{
-                                $checked="";
-                            }
+                            }                            
+                                                              
                         }
+                        
+                      
 
                 echo '<input class=""  id="rol" name="listarol[]" type="checkbox" value="'.$descriptRol->getIdRol().'" '.$checked.'>
                 '.$descriptRol->getRodescript().'</input><br>';

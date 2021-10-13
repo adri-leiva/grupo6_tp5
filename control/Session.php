@@ -65,7 +65,7 @@ class Session {
         $Objusuario=null;
         $abmusuario=new ABMUsuario();
         $buscarusuario= $abmusuario->buscar(['idusuario'=>$_SESSION['idusuario']]);
-        if(count($buscarusuario)){
+        if(count($buscarusuario)>0){
             $Objusuario=$buscarusuario[0];
         }
         return $Objusuario;

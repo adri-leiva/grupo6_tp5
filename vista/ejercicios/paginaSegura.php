@@ -56,11 +56,19 @@ if (!$session->activa()) {
       </nav>
     </div>
   </header>
-<div>
 
+<?php
+$usuario = $session->getUsuario();
+$session->getRol();
+$roles = $session->getRol();
+$suRol = "";
+foreach ($roles as $rol) {
+  $suRol = $suRol . $rol . "  ";
+}
+echo "<h2>HAS INGRESADO COMO:</h2>";
+echo '<h3>Usuario: ' . $usuario->getUsNombre() . ' Rol: ' . $suRol . '</h3>';
+?>
 
-
-</div>
 
 
 

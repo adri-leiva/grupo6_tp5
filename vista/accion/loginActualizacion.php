@@ -14,27 +14,36 @@ $usdeshabilitado = $Objusdes[0]->getUsdeshabilitado();
 
 $datos['usdeshabilitado']=$usdeshabilitado;
 
-$listaRol=$datos['listarol'];
+//$listaRol=$datos['listarol'];
 $array=array();
 $abmUsuarioRol= new ABMUsuariorol();
+$usrol = $abmUsuarioRol->buscar($datos['idusuario']);
 
-foreach($listaRol as $rol){
-    $array=['idusuario'=>$datos['idusuario'],'idrol'=>$rol];
-    $roltrue=$abmUsuarioRol->baja($array);
-}
-foreach($listaRol as $rol){
-    $array=['idusuario'=>$datos['idusuario'],'idrol'=>$rol];
-    $roltrue=$abmUsuarioRol->alta($array);
-}
+if(isset($datos['listarol'])){
+    if(count($usrol)>0){
+        foreach($usrol as $rol){
+            $array=['idusuario'=>$datos['idusuario'],'idrol'=>$rol];
+            $roltrue=$abmUsuarioRol->baja($array);
+        }
+    }
+    foreach($datos['listarol'] as $rol){
+        $array=['idusuario'=>$datos['idusuario'],'idrol'=>$rol];
+        $roltrue=$abmUsuarioRol->alta($array);
+    }
 
-
-if($abmusuario->modificacion($datos) ||$roltrue){
-echo "datos modificados correctamente";
-
+    if($abmusuario->modificacion($datos) ||$roltrue){
+        echo "datos modificados correctamente";
+        
+    }else{
+    
+        echo "no se pudo modificar los datos";
+    }
 }else{
-
-    echo "no se pudo modificar los datos";
+    echo "no hay roles asignados";
 }
+
+
+
 
 ?>
 
