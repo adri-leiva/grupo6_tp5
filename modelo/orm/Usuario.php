@@ -13,7 +13,7 @@ class Usuario{
         $this->usnombre="";
         $this->uspass="";
         $this->usmail="";
-        $this->usdeshabilitado=null;
+        $this->usdeshabilitado=NULL;
         $this->mensajeoperacion="";        
     }
 

@@ -12,10 +12,6 @@ $id['idusuario']=$datos['id'];
 $encontrar= $usuario->buscar($id);
 $usuarioLogin=$encontrar[0];
 
-$buscarRol= new ABMUsuariorol();
-$usuarioRol= $buscarRol->buscar($id);
-$idrol=$usuarioRol[0];
-$roldescript=$idrol->getObj_rol()->getRodescript();
 
 ?>
 <div>
@@ -47,7 +43,7 @@ $roldescript=$idrol->getObj_rol()->getRodescript();
             </div>
             <div class="col py-3 px-lg-5  ">
                 <input id="uspass" name ="uspass" class="form-control" type="text" minlength="3" 
-                value="<?php echo $usuarioLogin->getUspass();?>" required>
+                value="<?php echo $usuarioLogin->getUspass();?>"required >
                 <div class="invalid-feedback">Ingrese un password correcto</div><br>
             </div>
             </div>
@@ -62,22 +58,32 @@ $roldescript=$idrol->getObj_rol()->getRodescript();
             </div>
             <div class="row">
                 <div class="col py-3 px-lg-5  ">
-                    ROL
+                    ROLES
                 </div>
-                <div class="col py-3 px-lg-5  ">
-                <input class="form-control" id="rol" name="rol" type="text" value="<?php echo $roldescript;?>" required>
-                <div class="invalid-feedback">edita el tipo de usuario</div><br>
+                <div class="col ">
+                    <?php
+                   $abmrol=new ABMRol();
+                   $abmUsuarioRol= new ABMUsuariorol();
+                   $listaUsuarioRol=$abmUsuarioRol->buscar($id);
+                    $listaRol= $abmrol->buscar(null);
+                    $checked="";
+                    foreach($listaRol as $descriptRol){
+
+                        foreach($listaUsuarioRol as $usuarioRol){
+                            if($descriptRol->getRodescript()==$usuarioRol->getObj_rol()->getRodescript()){
+                                        $checked="checked";
+                            }else{
+                                $checked="";
+                            }
+                        }
+
+                echo '<input class=""  id="rol" name="listarol[]" type="checkbox" value="'.$descriptRol->getIdRol().'" '.$checked.'>
+                '.$descriptRol->getRodescript().'</input><br>';
+                    }
+               ?>
                 </div>
             </div>
-            <div class="row" style="display:none;">
-                <div class="col py-3 px-lg-5  ">
-                    usdeshabilitado
-                </div>
-                <div class="col py-3 px-lg-5  ">
-                <input class="form-control" id="usdehabilitado" name="usdeshabilitado" type="text" value="<?php echo $usuarioLogin->getUsdeshabilitado();?>" required>
-                <div class="invalid-feedback">edita el tipo de usuario</div><br>
-                </div>
-            </div>
+         
      
                 <button class="btn btn-primary" type="submit">Guardar Cambios</button>
             </div>

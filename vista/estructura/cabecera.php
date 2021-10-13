@@ -45,7 +45,7 @@
         <a class="nav-link" aria-current="page" href="../index/index.php">INICIO</a>
         <a class="nav-link" href="../ejercicios/listarUsuario.php">LISTAR USUARIOS</a>
         <a class="nav-link" href="../ejercicios/login.php">LOGIN</a>
-        <a class="nav-link" href="#">Cerrar Sesion</a>
+       
       
         
       </nav>

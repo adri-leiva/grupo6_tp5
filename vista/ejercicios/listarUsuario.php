@@ -21,7 +21,7 @@ $usuarios=$objUsuario->buscar(null);
         </tr>'; 
             
                 foreach($usuarios as $objU){
-                    if($objU->getUsdeshabilitado()== null){
+                    if($objU->getUsdeshabilitado()== null || $objU->getUsdeshabilitado()== "0000-00-00 00:00:00"){
                     $id = $objU->getIdusuario();
                     $nombre = $objU->getUsnombre();
                     $email = $objU->getUsmail();

@@ -21,8 +21,9 @@ PRIMARY KEY (`idrol`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `rol` (`idrol`, `rodescript`) VALUES ('1', 'administrador');
-
 INSERT INTO `rol` (`idrol`, `rodescript`) VALUES ('2', 'editor');
+INSERT INTO `rol` (`idrol`, `rodescript`) VALUES ('3', 'lector');
+
 
 
 CREATE TABLE `usuariorol`(
@@ -35,5 +36,5 @@ FOREIGN KEY (`idrol`) REFERENCES `rol` (`idrol`) ON UPDATE CASCADE ON DELETE RES
 INSERT INTO `usuariorol` (`idusuario`, `idrol`) VALUES ('1', '1');
 INSERT INTO `usuariorol` (`idusuario`, `idrol`) VALUES ('2', '2');
 
-/* usuario: nombreEditor , pass:12345
-   usuario: nombreadmin , pass:55555 */
+/* usuario: nombreEditor , pass:55555
+   usuario: nombreadmin , pass:12345 */

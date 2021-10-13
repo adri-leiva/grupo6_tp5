@@ -94,7 +94,7 @@ class ABMRol{
     /**
      * permite buscar un objeto
      * @param array $param
-     * @return boolean
+     * @return 
      */
     public function buscar($param){
         $where = " true ";

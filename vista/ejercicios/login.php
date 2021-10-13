@@ -1,6 +1,11 @@
 <?php
 include_once("../estructura/cabecera.php");
+include_once("../../configuracion.php");
 
+$session = new Session();
+if($session->activa()){
+    header("location:paginasegura.php");
+}
 ?>
 
  
@@ -11,8 +16,17 @@ form {
 }
 </style>
 <form class="needs-validation" name="form" id="form" method="post" action="../accion/verificarLogin.php" novalidate>
+
     <div class="">
     <div class="row  mb-3" style="text-align: center;">
+        <?php 
+            if(isset($errorsession)){
+                echo $errorsession;
+            }
+        ?>
+</div>
+    <div class="row  mb-3" style="text-align: center;">
+    
         <h4 class="text-center" >Login</h4>
     </div>    
     <div class="row">
@@ -25,7 +39,7 @@ form {
     <div class="row pt-2">
         <div class="col">
             <label for="inputPassword2" class="visually-hidden">Password</label>
-            <input type="password" name="uspass" class="form-control" id="uspass" placeholder="Password" minlength="8" required>
+            <input type="password" name="uspass" class="form-control" id="uspass" placeholder="Password" minlength="5" required>
             <div class="invalid-feedback">Contraseña invalida</div>
         </div>
     </div>
