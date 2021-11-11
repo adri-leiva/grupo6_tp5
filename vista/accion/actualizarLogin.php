@@ -1,104 +1,103 @@
 <?php
-include_once("../estructura/cabecera.php");
 include_once("../../configuracion.php");
 
+$datos = data_submitted();
+if ($datos["seg"] == "true") {
+    include_once("../estructura/headerSeg.php");
+    $var = "seg";
+} else {
+    include_once("../estructura/header.php");
+    $var = "noSeg";
+}
+$abmUs = new AbmUsuario();
+$abmR = new AbmRol();
+$abmUR = new AbmUsuarioRol();
+$objUs = NULL;
+$arrayRoles=array();
+if (isset($datos['idUsuario'])) {
+    $listaUs = $abmUs->buscar($datos);
+    if (count($listaUs) > 0) {
+        $objUs = $listaUs[0];
 
-$datos= data_submitted();
-$usuario= new ABMUsuario();
-$id=[];
-
-$id['idusuario']=$datos['id'];
-
-$encontrar= $usuario->buscar($id);
-$usuarioLogin=$encontrar[0];
-
-
+        $userRol = $abmUR->buscar(["idUsuario"=>$objUs->getIdUsuario()]);
+        if (count($userRol) > 0) {
+            foreach ($userRol as $obj) {
+                array_push($arrayRoles, $obj->getObjRol()->getIdRol());
+            }
+        }
+    }
+}
 ?>
-<div>
-<h2>EDITAR USUARIO</h2>
-
-        <form  method="post" class="needs-validation" action="../accion/loginActualizacion.php" novalidate>
-            <div class="row">
-                <div class="col py-3 px-lg-5  ">
-                ID</div>
-                <div class="col py-3 px-lg-5  ">
-                    <input id="idusuario" readonly name ="idusuario" class="form-control" type="text" value="
-                    <?php echo $usuarioLogin->getIdusuario();?>" required>
-                 
-                </div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="card border p-1 rounded shadow p-4">
+                <h4 class="title m-0">Actualizar Sesión</h4>
+                <hr>
+                <?php
+                if ($objUs != null) { ?>
+                    <form id="actualizarLog" name="actualizarLog" method="POST" action="accionLogin.php" data-toggle="validator" novalidate>
+                        <div class="row mb-3">
+                            <div class="col-sm-5 m-2">
+                                <div class="form-group">
+                                    <label>ID</label><br />
+                                    <input class="form-control" id="idUsuario:" readonly name="idUsuario" type="text" value=<?=$objUs->getIdusuario()?>>
+                                </div>
+                            </div>
+                            <div class="col-sm-5 m-2">
+                                <div class="form-group">
+                                    <label>Nombre</label>
+                                    <input class="form-control" id="usNombre" type="text" name="usNombre" value=<?=$objUs->getUsNombre()?> required>
+                                </div>
+                            </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-5 m-2">
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input class="form-control" id="usMail" name="usMail" value=<?=$objUs->getusMail()?> required>
+                                </div>
+                            </div>
+                            <div class="col-sm-5 m-2">
+                                <label>Roles del usuario</label>
+                                    <?php
+                                    $rolesDisp = $abmR->buscar(null);
+                                    if (count($rolesDisp) != 0) {
+                                        echo '<div class="form-group">
+                                                <div class="input-group">';
+                                        foreach ($rolesDisp as $rol) {
+                                            $checked = "";
+                                            if (in_array($rol->getIdRol(), $arrayRoles)) {
+                                                $checked = "checked";
+                                            }
+                                            echo '<label class="form-check-label ms-1 me-2 fw-light">
+                                            <input class="form-check-input" type="checkbox" id="roles" name="roles[]" value="' . $rol->getIdRol() . '" ' . $checked . ' required> ' . $rol->getDescripcionRol().'
+                                            </label>';
+                                        }
+                                        echo '</div>
+                                            </div>
+                                        </div>';
+                                    }
+                                    ?>
+                            </div>
+                        </div>
+                        <input id="accion" name="accion" value="<?php echo $var ?>" type="hidden">
+                        <div class="row mb-2">
+                            <div class="d-grid gap-2 d-md-flex ">
+                                <button class="btn btn-primary me-md-2" type="submit">Guardar</button>
+                            </div>
+                        </div>
+                    </form>
+                <?php
+                } else {
+                    echo "La persona ingresada no se encontro";
+                ?>
+                    <a href="paginaSegura.php"><button type="button" class="btn btn-outline-primary mt-3">Volver</button></a>
+                <?php }
+                ?>
             </div>
-            <div class="row">
-                <div class="col py-3 px-lg-5  ">
-                Nombre de Usuario
-            </div>
-                <div class="col py-3 px-lg-5  ">
-                    <input id="usnombre" name ="usnombre" class="form-control" type="text" minlength="3"
-                     value="<?php echo $usuarioLogin->getUsnombre();?>" required>
-                    <div class="invalid-feedback">ingrese un nombre de usuario valido</div><br>
-                </div>
-            </div>
-            <div class="row" style="display:none;">
-                <div class="col py-3 px-lg-5  ">
-                    Password
-            </div>
-            <div class="col py-3 px-lg-5  ">
-                <input id="uspass" name ="uspass" class="form-control" type="text" minlength="3" 
-                value="<?php echo $usuarioLogin->getUspass();?>"required >
-                <div class="invalid-feedback">Ingrese un password correcto</div><br>
-            </div>
-            </div>
-            <div class="row">
-                <div class="col py-3 px-lg-5  ">
-                    email
-                </div>
-                <div class="col py-3 px-lg-5  ">
-                    <input id="usmail" name ="usmail" class="form-control" type="email" value="<?php echo $usuarioLogin->getUsmail();?>" required>
-                    <div class="invalid-feedback">Ingrese un correo electronico</div><br>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col py-3 px-lg-5  ">
-                    ROLES
-                </div>
-                <div class="col ">
-                    <?php
-                   $abmrol=new ABMRol();
-                   $abmUsuarioRol= new ABMUsuariorol();
-                   $listaUsuarioRol=$abmUsuarioRol->buscar($id);
-                    $listaRol= $abmrol->buscar(null);
-                    $checked="";
-                    foreach($listaRol as $descriptRol){
-                        $checked="";
-                    
-                        foreach($listaUsuarioRol as $usuarioRol){
-                            if($descriptRol->getRodescript()==$usuarioRol->getObj_rol()->getRodescript()){
-                                        $checked="checked";
-                            }                            
-                                                              
-                        }
-                        
-                      
-
-                echo '<input class=""  id="rol" name="listarol[]" type="checkbox" value="'.$descriptRol->getIdRol().'" '.$checked.'>
-                '.$descriptRol->getRodescript().'</input><br>';
-                    }
-               ?>
-                </div>
-            </div>
-         
-     
-                <button class="btn btn-primary" type="submit">Guardar Cambios</button>
-            </div>
-        </form>
-
-
-
-
-
-
-
+        </div>
+    </div>
+</div>
 <?php
-
-include_once("../estructura/pie.php");
-
+include_once("../../vista/estructura/footer.php");
 ?>

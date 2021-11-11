@@ -1,8 +1,8 @@
 <?php
-date_default_timezone_set('America/Araguaina');
 include_once("../../configuracion.php");
 $datos = data_submitted();
-if ($datos["seg"] == "true") {
+//print_r($datos);
+if ($datos["seg"] == true) {
     include_once("../estructura/headerSeg.php");
 } else {
     include_once("../estructura/header.php");
@@ -25,11 +25,12 @@ if (isset($datos['idUsuario'])) {
     <div class="row">
         <div class="col-sm-6">
             <div class="card border p-1 rounded shadow p-4">
-                <h4>Borrar sesión</h4>
+                <h4 class="title m-0">Habilitar Sesión</h4>
+                <hr>
                 <?php
 
                 if ($objUs != null) {
-                    $datos["usDeshabilitado"] = date('Y-m-d H:i:s');
+                    $datos["usDeshabilitado"] = NULL;
                     $exito = $abmUs->modificacion($datos);
                 } else {
                     echo "La persona ingresada no se encontro";
@@ -37,17 +38,12 @@ if (isset($datos['idUsuario'])) {
 
                 <?php }
                 if ($exito) {
-                    echo "El borrado se hizo con exito";
+                    echo "Habilitación Exitosa";
                 } else {
-                    echo "no se pudo realizar el borrado";
+                    echo "No se pudo realizar la habilitación";
                 }
                 ?>
-                <?php
-                if ($datos["seg"] == "true") { ?>
-                    <a href="../ejercicios/paginaSegura.php"><button type="button" class="btn btn-outline-primary mt-3">Volver</button></a>
-                <?php } else { ?>
-                    <a href="../ejercicios/listarUsuarios.php"><button type="button" class="btn btn-outline-primary mt-3">Volver</button></a>
-                <?php } ?>
+                <a href="../ejercicios/paginaSegura.php"><button type="button" class="btn btn-outline-primary mt-3">Volver</button></a>
             </div>
         </div>
     </div>

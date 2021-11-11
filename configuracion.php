@@ -1,16 +1,16 @@
-<?php header('Content-Type: text/html; charset=utf-8');
-header ("Cache-Control: no-cache, must-revalidate ");
+<?php //header('Content-Type: text/html; charset=utf-8');
+//header ("Cache-Control: no-cache, must-revalidate ");
 
 /////////////////////////////
 // CONFIGURACION APP//
 /////////////////////////////
 
-$PROYECTO ='TP5';
+$PROYECTO ='Grupo8_tp5';
 
 //variable que almacena el directorio del proyecto
 $ROOT =$_SERVER['DOCUMENT_ROOT']."/$PROYECTO/";
 
-include_once($ROOT.'util/funciones.php');
+include_once($ROOT.'utiles/funciones.php');
 
 
 // Variable que define la pagina de autenticacion del proyecto

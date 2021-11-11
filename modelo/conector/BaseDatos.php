@@ -14,7 +14,7 @@ class BaseDatos extends PDO {
     public function __construct(){
         $this->engine = 'mysql';
         $this->host = 'localhost';
-        $this->database = 'login';
+        $this->database = 'autenticacion';
         $this->user = 'root';
         $this->pass = '';
         $this->debug = true;
@@ -42,20 +42,9 @@ class BaseDatos extends PDO {
         return $this->getConec();
         
     }
-    
-  
-    
-    
-    
-    
-    
     public function getConec(){
         return $this->conec;
     }
-    
-    
-    
-    
     public function setDebug($debug){
         $this->debug = $debug;
     }

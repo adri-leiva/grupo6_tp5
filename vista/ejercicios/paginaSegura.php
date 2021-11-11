@@ -1,81 +1,67 @@
-<?php 
-include_once('../../configuracion.php');
-$session = new Session();
-if (!$session->activa()) {
-  header('location:../ejercicios/login.php');
-}
+<?php
+include_once("../../configuracion.php");
+include_once("../estructura/headerSeg.php");
+
+$colR = $objSess->getRol();
+
+$abmUs = new AbmUsuario();
+$colUsuarios = $abmUs->buscar(null);
 ?>
-<!doctype html>
-<html lang="en" class="h-100">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.88.1">
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8"><script src="../js/md5_archivos/md5.js">
-</script>
-    <title>Login - Grupo 6</title>
 
-      
-    <!-- Bootstrap core CSS -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
+<div class="container">
+    <div class="row">
+        <div class="col-md-7">
+            <div class="card border rounded shadow p-3">
+                <h2>Lista de usuarios</h2><br>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (count($colUsuarios) > 0) {
+                            foreach ($colUsuarios as $us) {
+                                // if ($us->getUsDeshabilitado() == NUll || $us->getUsDeshabilitado() == "0000-00-00 00:00:00") {
+                        ?>
+                                <tr>
+                                    <td><?php echo $us->getIdUsuario() ?></td>
+                                    <td><?php echo $us->getUsNombre() ?></td>
+                                    <td><?php echo $us->getUsMail() ?></td>
+                                    <td>
+                                        <?php
+                                        $edit=false;
+                                    foreach($colR as $objR){
+                                        if (($objR->getDescripcionRol() == "Administracion" || $objR->getDescripcionRol() == "Editor")&& !$edit && ($us->getUsDeshabilitado() == NUll || $us->getUsDeshabilitado() == "0000-00-00 00:00:00")) { ?>
+                                            <a class="btn btn-success" href="../accion/actualizarLogin.php?idUsuario=<?php echo $us->getIdUsuario() ?>&seg=true">editar</a>
+                                        <?php $edit=true;} ?>
+                                        <?php if ($objR->getDescripcionRol() == "Administracion" && ($us->getUsDeshabilitado() == NUll || $us->getUsDeshabilitado() == "0000-00-00 00:00:00")) { ?>
+                                            <a class="btn btn-warning" href="../accion/eliminarLogin.php?idUsuario=<?php echo $us->getIdUsuario() ?>&seg=true">borrar</a>
+                                        <?php } ?>
+                                        <?php if ($objR->getDescripcionRol() == "Administracion" && !($us->getUsDeshabilitado() == NUll || $us->getUsDeshabilitado() == "0000-00-00 00:00:00")) { ?>
+                                            <a class="btn btn-info" href="../accion/habilitarLogin.php?idUsuario=<?php echo $us->getIdUsuario() ?>&seg=true">habilitar</a>
+                                        <?php }
+                                        }
+                                        ?>
+                                    </td>
+                                </tr>
 
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-    </style>
-
-    
-    <!-- Custom styles for this template -->
-    <link href="../css/cover.css" rel="stylesheet">
-  </head>
-  <body class="d-flex h-100 text-center text-white bg-dark">
-    
-<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-  <header class="mb-auto">
-    <div>
-      <h3 class="float-md-start mb-0">PWD 2021 TP5</h3>
-      <nav class="nav nav-masthead justify-content-center float-md-end">
-        <a class="nav-link" aria-current="page" href="../index/index.php">INICIO</a>
-        <a class="nav-link" href="../ejercicios/listarUsuario.php">LISTAR USUARIOS</a>
-        <a class="nav-link" href="../ejercicios/login.php">LOGIN</a>
-        <a class="nav-link" href="../accion/cerrarLogin.php">Cerrar Sesion</a>
-      
-        
-      </nav>
+                        <?php
+                            }
+                        } ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <p>
+            </p>
+        </div>
     </div>
-  </header>
-
+</div>
 <?php
-$usuario = $session->getUsuario();
-$session->getRol();
-$roles = $session->getRol();
-$suRol = "";
-foreach ($roles as $rol) {
-  $suRol = $suRol . $rol . "  ";
-}
-echo "<h2>HAS INGRESADO COMO:</h2>";
-echo '<h3>Usuario: ' . $usuario->getUsNombre() . ' Rol: ' . $suRol . '</h3>';
-?>
-
-
-
-
-
-
-
-
-<?php
-  include_once("../estructura/pie.php");
+include_once("../estructura/footer.php");
 ?>
